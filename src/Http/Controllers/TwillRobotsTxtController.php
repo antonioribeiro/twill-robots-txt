@@ -112,6 +112,10 @@ class TwillRobotsTxtController extends ModuleController
     {
         if (TwillRobotsTxtFacade::allDomainsEnabled()) {
             $scopes['domain'] = '*';
+        } else {
+            $all = TwillRobotsTxt::where('domain', '*')->first();
+
+            $scopes['exceptIds'] = [$all->id];
         }
 
         return parent::getIndexItems($scopes, $forcePagination);
