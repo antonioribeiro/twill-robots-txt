@@ -13,13 +13,9 @@ class CreateTwillRobotsTxtTables extends Migration
 
             $table->string('domain')->nullable();
 
-            $table->string('username')->nullable();
+            $table->text('protected')->nullable();
 
-            $table->string('password')->nullable();
-
-            $table->boolean('allow_laravel_login')->default(false);
-
-            $table->boolean('allow_twill_login')->default(false);
+            $table->text('unprotected')->nullable();
         });
 
         Schema::create('twill_robots_txt_revisions', function (Blueprint $table) {
