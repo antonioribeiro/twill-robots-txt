@@ -4,11 +4,11 @@ namespace A17\TwillRobotsTxt\Support;
 
 use Illuminate\Support\Arr;
 use Illuminate\Http\Request;
-use A17\HttpBasicAuth\Middleware;
+use A17\RobotsTxt\Middleware;
 use Illuminate\Http\Client\Response;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\View;
-use A17\HttpBasicAuth\HttpBasicAuth;
+use A17\RobotsTxt\RobotsTxt;
 use Illuminate\Support\Facades\RateLimiter;
 use A17\TwillRobotsTxt\Models\Behaviors\Encrypt;
 use A17\TwillRobotsTxt\Repositories\TwillRobotsTxtRepository;
@@ -212,7 +212,7 @@ class TwillRobotsTxt
             return true;
         }
 
-        return HttpBasicAuth::checkAuth($request, [
+        return RobotsTxt::checkAuth($request, [
             'username' => $this->username(),
             'password' => $this->password(),
             'guards' => $this->getAuthGuards(),

@@ -16,7 +16,7 @@ use A17\TwillRobotsTxt\Support\Facades\TwillRobotsTxt as TwillRobotsTxtFacade;
 
 class TwillRobotsTxtController extends ModuleController
 {
-    protected $moduleName = 'twillHttpBasicAuth';
+    protected $moduleName = 'twillRobotsTxt';
 
     protected $titleColumnKey = 'domain_string';
 
