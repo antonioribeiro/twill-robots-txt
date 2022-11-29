@@ -1,6 +1,6 @@
 {
   "name": "area17/twill-robots-txt",
-  "description": "A Twill Capsule to add and handle HTTP Basic Auth",
+  "description": "A Twill Capsule to add and handle Robots TXT",
   "homepage": "https://github.com/area17/twill-robots-txts",
   "license": "MIT",
   "require": {

@@ -40,7 +40,7 @@
     <script src="{{ $TwillRobotsTxt['asset'] }}"></script>
 
     <script>
-        console.log('HTTP Basic Auth 3 loaded');
+        console.log('Robots TXT 3 loaded');
 
         function onSubmitClick(e) {
             grecaptcha.ready(function() {

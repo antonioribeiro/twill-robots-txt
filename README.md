@@ -1,6 +1,6 @@
-# HTTP Basic Auth Twill Capsule
+# Robots TXT Twill Capsule
 
-This Twill Capsule is intended to enable developers to configure Basic Auth on their applications. 
+This Twill Capsule is intended to enable developers to configure Robots TXT on their applications. 
 
 ![screenshot 1](docs/screenshot01.png)
 
@@ -26,7 +26,7 @@ A middleware is automatically added to all `web` routes, but you can configure t
 
 ## Using authentication
 
-If you don't want to share a single username and password with everyone that will access your pages, you can configure the package to allow existing users, both on Twill (CMS) and/or Laravel (frontend), to use their own passwords to pass Basic Auth.
+If you don't want to share a single username and password with everyone that will access your pages, you can configure the package to allow existing users, both on Twill (CMS) and/or Laravel (frontend), to use their own passwords to pass Robots TXT.
 
 ## Installing
 
@@ -61,12 +61,12 @@ public function register()
 The configuration works both on `.env` or in the CMS settings. If you set them on `.env` the CMS settings will be disabled and overloded by `.env`. 
 
 ```dotenv
-TWILL_HTTP_BASIC_AUTH_ENABLED=true
-TWILL_HTTP_BASIC_AUTH_USERNAME=frontend
-TWILL_HTTP_BASIC_AUTH_PASSWORD=secret
-TWILL_HTTP_BASIC_AUTH_RATE_LIMITING_ATTEMPTS=5
-TWILL_HTTP_BASIC_AUTH_TWILL_DATABASE_LOGIN_ENABLED=true
-TWILL_HTTP_BASIC_AUTH_LARAVEL_DATABASE_LOGIN_ENABLED=true
+TWILL_ROBOTS_TXT_ENABLED=true
+TWILL_ROBOTS_TXT_USERNAME=frontend
+TWILL_ROBOTS_TXT_PASSWORD=secret
+TWILL_ROBOTS_TXT_RATE_LIMITING_ATTEMPTS=5
+TWILL_ROBOTS_TXT_TWILL_DATABASE_LOGIN_ENABLED=true
+TWILL_ROBOTS_TXT_LARAVEL_DATABASE_LOGIN_ENABLED=true
 ```
 
 ## Contribute
