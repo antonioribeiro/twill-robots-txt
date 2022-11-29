@@ -26,8 +26,6 @@ class TwillRobotsTxt
 
     protected bool|null $enabled = null;
 
-    protected Response|null $robots_txtResponse = null;
-
     protected TwillRobotsTxtModel|null $current = null;
 
     public function __construct()
@@ -52,10 +50,7 @@ class TwillRobotsTxt
 
     public function enabled(): bool
     {
-        return $this->enabled ??
-            ($this->hasDotEnv() ? $this->config('enabled') : true) &&
-                $this->isConfigured() &&
-                (!$this->hasDotEnv() || $this->readFromDatabase('published'));
+        return $this->enabled ?? ($this->hasDotEnv() ? $this->config('enabled') : true);
     }
 
     public function unprotected(bool $force = false): string|null
@@ -85,10 +80,15 @@ class TwillRobotsTxt
     protected function readFromDatabase(string $key): string|bool|null
     {
         if (blank($this->current)) {
-            $domains = app(TwillRobotsTxtRepository::class)
-                ->published()
-                ->orderBy('domain')
-                ->get();
+            $domains = app(TwillRobotsTxtRepository::class)->orderBy('domain');
+
+            if ($this->hasDotEnv()) {
+                $domains->where('domain', '*');
+            } else {
+                $domains->where('domain', $this->getDomain());
+            }
+
+            $domains = $domains->get();
 
             $domains = $domains->filter(
                 fn($domain) => filled($domain->getAttributes()['protected']) &&
@@ -157,5 +157,19 @@ class TwillRobotsTxt
     public function allDomainsEnabled(): bool
     {
         return $this->hasDotEnv() || $this->readFromDatabase('domain') === '*';
+    }
+
+    public function getCurrent()
+    {
+        if (blank($this->current)) {
+            $this->readFromDatabase('domain');
+        }
+
+        return $this->current;
+    }
+
+    public function robotsTxt(): string
+    {
+        return $this->getCurrent()->published ? $this->getCurrent()->protected : $this->getCurrent()->unprotected;
     }
 }

@@ -4,10 +4,9 @@ namespace A17\TwillRobotsTxt;
 
 use Illuminate\Support\Str;
 use A17\Twill\Facades\TwillCapsules;
-use Illuminate\Contracts\Http\Kernel;
-use A17\Twill\TwillPackageServiceProvider;
-use A17\TwillRobotsTxt\Http\Middleware;
+use Illuminate\Support\Facades\Route;
 use A17\TwillRobotsTxt\Services\Helpers;
+use A17\Twill\TwillPackageServiceProvider;
 use A17\TwillRobotsTxt\Support\TwillRobotsTxt;
 
 class ServiceProvider extends TwillPackageServiceProvider
@@ -19,11 +18,9 @@ class ServiceProvider extends TwillPackageServiceProvider
     {
         $this->registerThisCapsule();
 
-        $this->registerViews();
-
         $this->registerConfig();
 
-        $this->configureMiddeleware();
+        $this->registerRoutes();
 
         parent::boot();
     }
@@ -41,11 +38,6 @@ class ServiceProvider extends TwillPackageServiceProvider
         app()->singleton(TwillRobotsTxt::class, fn() => new TwillRobotsTxt());
     }
 
-    public function registerViews(): void
-    {
-        $this->loadViewsFrom(__DIR__ . '/resources/views', 'twill-robots-txt');
-    }
-
     public function registerConfig(): void
     {
         $package = 'twill-robots-txt';
@@ -59,18 +51,11 @@ class ServiceProvider extends TwillPackageServiceProvider
         ]);
     }
 
-    public function configureMiddeleware(): void
+    public function registerRoutes()
     {
-        if (config('twill-robots-txt.middleware.automatic')) {
-            /**
-             * @phpstan-ignore-next-line
-             * @var \Illuminate\Foundation\Http\Kernel $kernel
-             */
-            $kernel = $this->app[Kernel::class];
-
-            foreach (config('twill-robots-txt.middleware.groups', []) as $group) {
-                $kernel->appendMiddlewareToGroup($group, config('twill-robots-txt.middleware.class'));
-            }
-        }
+        Route::get('/robots.txt', [
+            config('twill-robots-txt.route.controller'),
+            config('twill-robots-txt.route.action'),
+        ])->name('robots.txt');
     }
 }

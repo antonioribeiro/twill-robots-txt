@@ -16,5 +16,10 @@ return [
     'defaults' => [
         'protected' => str_replace('\n', "\n", env('TWILL_ROBOTS_TXT_PROTECTED', $protected)),
         'unprotected' => str_replace('\n', "\n", env('TWILL_ROBOTS_TXT_UNPROTECTED', $unprotected)),
-    ]
+    ],
+
+    'route' => [
+        'controller' => A17\TwillRobotsTxt\Http\Controllers\TwillRobotsTxtFrontController::class,
+        'action' => 'robots',
+    ],
 ];
