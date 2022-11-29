@@ -5,8 +5,7 @@
   "license": "MIT",
   "require": {
     "php": ">=8.0",
-    "area17/twill": "^2.7|^3.0",
-    "area17/robots-txt": "1.x-dev"
+    "area17/twill": "^2.7|^3.0"
   },
   "require-dev": {
       "nunomaduro/larastan": "^2.0",
@@ -14,12 +13,6 @@
       "orchestra/testbench": "^7.11",
       "friendsofphp/php-cs-fixer": "^3.0"
   },
-  "repositories": [
-      {
-          "type": "vcs",
-          "url": "https://github.com/area17/robots-txt"
-      }
-  ],
   "autoload": {
     "psr-4": {
       "A17\\TwillRobotsTxt\\": "src"
