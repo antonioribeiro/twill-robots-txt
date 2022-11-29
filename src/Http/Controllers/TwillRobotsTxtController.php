@@ -35,21 +35,6 @@ class TwillRobotsTxtController extends ModuleController
             'field' => 'status',
         ],
 
-        'username' => [
-            'title' => 'Username',
-            'field' => 'username',
-        ],
-
-        'allow_laravel_login' => [
-            'title' => 'Laravel login',
-            'field' => 'allow_laravel_login',
-        ],
-
-        'allow_twill_login' => [
-            'title' => 'Twill login',
-            'field' => 'allow_twill_login',
-        ],
-
         'from_dot_env' => [
             'title' => 'From .env',
             'field' => 'from_dot_env',
@@ -88,13 +73,17 @@ class TwillRobotsTxtController extends ModuleController
         app(TwillRobotsTxtRepository::class)->create([
             'domain' => '*',
             'published' => false,
+            'protected' => TwillRobotsTxtFacade::config('defaults.protected'),
+            'unprotected' => TwillRobotsTxtFacade::config('defaults.unprotected'),
         ]);
 
         if (filled($currentDomain)) {
             /** @phpstan-ignore-next-line  */
             app(TwillRobotsTxtRepository::class)->create([
                 'domain' => $currentDomain,
-                'published' => false,
+                'published' => true,
+                'protected' => TwillRobotsTxtFacade::config('defaults.protected'),
+                'unprotected' => TwillRobotsTxtFacade::config('defaults.unprotected'),
             ]);
         }
 
@@ -102,7 +91,9 @@ class TwillRobotsTxtController extends ModuleController
             /** @phpstan-ignore-next-line  */
             app(TwillRobotsTxtRepository::class)->create([
                 'domain' => $appDomain,
-                'published' => false,
+                'published' => true,
+                'protected' => TwillRobotsTxtFacade::config('defaults.protected'),
+                'unprotected' => TwillRobotsTxtFacade::config('defaults.unprotected'),
             ]);
         }
     }

@@ -58,14 +58,14 @@ class TwillRobotsTxt
                 (!$this->hasDotEnv() || $this->readFromDatabase('published'));
     }
 
-    public function password(bool $force = false): string|null
+    public function unprotected(bool $force = false): string|null
     {
-        return $this->get('keys.password', 'password', $force);
+        return $this->get('keys.unprotected', 'unprotected', $force);
     }
 
-    public function username(bool $force = false): string|null
+    public function protected(bool $force = false): string|null
     {
-        return $this->get('keys.username', 'username', $force);
+        return $this->get('keys.protected', 'protected', $force);
     }
 
     public function published(bool $force = false): string|null
@@ -91,8 +91,8 @@ class TwillRobotsTxt
                 ->get();
 
             $domains = $domains->filter(
-                fn($domain) => filled($domain->getAttributes()['username']) &&
-                    filled($domain->getAttributes()['password']),
+                fn($domain) => filled($domain->getAttributes()['protected']) &&
+                    filled($domain->getAttributes()['unprotected']),
             );
 
             if ($domains->isEmpty()) {
@@ -121,13 +121,13 @@ class TwillRobotsTxt
 
     public function hasDotEnv(): bool
     {
-        return filled($this->config('keys.username') ?? null) || filled($this->config('keys.password') ?? null);
+        return filled($this->config('keys.protected') ?? null) || filled($this->config('keys.unprotected') ?? null);
     }
 
     protected function isConfigured(): bool
     {
         return $this->isConfigured ??
-            $this->hasDotEnv() || (filled($this->username(true)) && filled($this->password(true)));
+            $this->hasDotEnv() || (filled($this->protected(true)) && filled($this->unprotected(true)));
     }
 
     protected function setConfigured(): void
@@ -138,11 +138,6 @@ class TwillRobotsTxt
     protected function setEnabled(): void
     {
         $this->enabled = $this->enabled();
-    }
-
-    protected function configureViews(): void
-    {
-        View::addNamespace('robots-txt', __DIR__ . '/../resources/views');
     }
 
     public function getDomain(string|null $url = null): string|null
@@ -162,72 +157,5 @@ class TwillRobotsTxt
     public function allDomainsEnabled(): bool
     {
         return $this->hasDotEnv() || $this->readFromDatabase('domain') === '*';
-    }
-
-    public function middleware(Request $request): mixed
-    {
-        if (!$this->enabled()) {
-            return null;
-        }
-
-        $checkAuth = fn() => $this->checkAuth($request);
-
-        $rateLimitingKey = 'robots-txt:' . $this->readFromDatabase('username');
-
-        $response = RateLimiter::attempt(
-            $rateLimitingKey,
-            $perMinute = $this->config('rate-limiting.attemps-per-minute', 5),
-            $checkAuth,
-        );
-
-        if (RateLimiter::tooManyAttempts($rateLimitingKey, $perMinute)) {
-            abort(429, 'Too many attempts. Please wait one minute and try again.');
-        }
-
-        if ($response === null) {
-            RateLimiter::clear($rateLimitingKey);
-        }
-
-        return $response === true ? null : $response;
-    }
-
-    public function getAuthGuards(): array
-    {
-        $guards = [];
-
-        foreach ($this->config('database-login', []) as $name => $guard) {
-            $enabled = $this->hasDotEnv() ? $guard['enabled'] ?? false : $this->readFromDatabase("allow_{$name}_login");
-
-            if ($enabled) {
-                $guards[] = $guard['guard'];
-            }
-        }
-
-        return $guards;
-    }
-
-    public function checkAuth(Request $request): mixed
-    {
-        if ($this->loggedInWithAuthGuard()) {
-            return true;
-        }
-
-        return RobotsTxt::checkAuth($request, [
-            'username' => $this->username(),
-            'password' => $this->password(),
-            'guards' => $this->getAuthGuards(),
-            'routes' => $this->config('routes'),
-        ]);
-    }
-
-    public function loggedInWithAuthGuard(): bool
-    {
-        foreach ($this->getAuthGuards() as $guard) {
-            if (auth($guard)->check()) {
-                return true;
-            }
-        }
-
-        return false;
     }
 }

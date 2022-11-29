@@ -21,37 +21,9 @@ class TwillRobotsTxt extends Model
 
     protected $table = 'twill_robots_txt';
 
-    protected $fillable = ['published', 'domain', 'username', 'password', 'allow_laravel_login', 'allow_twill_login'];
+    protected $fillable = ['published', 'domain', 'protected', 'unprotected'];
 
     protected $appends = ['domain_string', 'status', 'from_dot_env'];
-
-    public function getUsernameAttribute(): string|null
-    {
-        return $this->decrypt(
-            Helpers::instance()
-                ->setCurrent($this)
-                ->username(true),
-        );
-    }
-
-    public function setUsernameAttribute(string|null $value): void
-    {
-        $this->attributes['username'] = $this->encrypt($value);
-    }
-
-    public function getPasswordAttribute(): string|null
-    {
-        return $this->decrypt(
-            Helpers::instance()
-                ->setCurrent($this)
-                ->password(true),
-        );
-    }
-
-    public function setPasswordAttribute(string|null $value): void
-    {
-        $this->attributes['password'] = $this->encrypt($value);
-    }
 
     public function getPublishedAttribute(): string|null
     {
@@ -78,7 +50,7 @@ class TwillRobotsTxt extends Model
 
     public function getConfiguredAttribute(): bool
     {
-        return filled($this->username) && filled($this->password);
+        return filled($this->protected) && filled($this->unprotected);
     }
 
     public function getStatusAttribute(): string
