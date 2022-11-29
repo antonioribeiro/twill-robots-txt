@@ -1,0 +1,42 @@
+{
+  "name": "area17/twill-http-basic-auth",
+  "description": "A Twill Capsule to add and handle HTTP Basic Auth",
+  "homepage": "https://github.com/area17/twill-http-basic-auths",
+  "license": "MIT",
+  "require": {
+    "php": ">=8.0",
+    "area17/twill": "^2.7|^3.0",
+    "area17/http-basic-auth": "1.x-dev"
+  },
+  "require-dev": {
+      "nunomaduro/larastan": "^2.0",
+      "phpstan/phpstan": "^1.8",
+      "orchestra/testbench": "^7.11",
+      "friendsofphp/php-cs-fixer": "^3.0"
+  },
+  "repositories": [
+      {
+          "type": "vcs",
+          "url": "https://github.com/area17/http-basic-auth"
+      }
+  ],
+  "autoload": {
+    "psr-4": {
+      "A17\\TwillHttpBasicAuth\\": "src"
+    }
+  },
+  "extra": {
+    "laravel": {
+      "providers": [
+        "A17\\TwillHttpBasicAuth\\ServiceProvider"
+      ]
+    }
+  },
+  "scripts": {
+      "post-autoload-dump": [
+          "npx husky install"
+      ]
+  },
+  "minimum-stability": "dev",
+  "prefer-stable": true
+}
