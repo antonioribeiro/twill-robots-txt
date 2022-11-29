@@ -1,8 +1,8 @@
 <?php
 
-namespace A17\TwillHttpBasicAuth\Services;
+namespace A17\TwillRobotsTxt\Services;
 
-use A17\TwillHttpBasicAuth\Support\TwillHttpBasicAuth;
+use A17\TwillRobotsTxt\Support\TwillRobotsTxt;
 
 class Helpers
 {
@@ -11,12 +11,12 @@ class Helpers
         require __DIR__ . '/../Support/helpers.php';
     }
 
-    public static function instance(): TwillHttpBasicAuth
+    public static function instance(): TwillRobotsTxt
     {
-        if (!app()->bound('http-basic-auth')) {
-            app()->singleton('http-basic-auth', fn() => new TwillHttpBasicAuth());
+        if (!app()->bound('robots-txt')) {
+            app()->singleton('robots-txt', fn() => new TwillRobotsTxt());
         }
 
-        return app('http-basic-auth');
+        return app('robots-txt');
     }
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace A17\TwillHttpBasicAuth\Support;
+namespace A17\TwillRobotsTxt\Support;
 
 use Illuminate\Support\Arr;
 use Illuminate\Http\Request;
@@ -10,11 +10,11 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\View;
 use A17\HttpBasicAuth\HttpBasicAuth;
 use Illuminate\Support\Facades\RateLimiter;
-use A17\TwillHttpBasicAuth\Models\Behaviors\Encrypt;
-use A17\TwillHttpBasicAuth\Repositories\TwillHttpBasicAuthRepository;
-use A17\TwillHttpBasicAuth\Models\TwillHttpBasicAuth as TwillHttpBasicAuthModel;
+use A17\TwillRobotsTxt\Models\Behaviors\Encrypt;
+use A17\TwillRobotsTxt\Repositories\TwillRobotsTxtRepository;
+use A17\TwillRobotsTxt\Models\TwillRobotsTxt as TwillRobotsTxtModel;
 
-class TwillHttpBasicAuth
+class TwillRobotsTxt
 {
     use Encrypt;
 
@@ -26,9 +26,9 @@ class TwillHttpBasicAuth
 
     protected bool|null $enabled = null;
 
-    protected Response|null $http_basic_authResponse = null;
+    protected Response|null $robots_txtResponse = null;
 
-    protected TwillHttpBasicAuthModel|null $current = null;
+    protected TwillRobotsTxtModel|null $current = null;
 
     public function __construct()
     {
@@ -41,7 +41,7 @@ class TwillHttpBasicAuth
 
     public function config(string|null $key = null, mixed $default = null): mixed
     {
-        $this->config ??= filled($this->config) ? $this->config : (array) config('twill-http-basic-auth');
+        $this->config ??= filled($this->config) ? $this->config : (array) config('twill-robots-txt');
 
         if (blank($key)) {
             return $this->config;
@@ -85,7 +85,7 @@ class TwillHttpBasicAuth
     protected function readFromDatabase(string $key): string|bool|null
     {
         if (blank($this->current)) {
-            $domains = app(TwillHttpBasicAuthRepository::class)
+            $domains = app(TwillRobotsTxtRepository::class)
                 ->published()
                 ->orderBy('domain')
                 ->get();
@@ -99,13 +99,13 @@ class TwillHttpBasicAuth
                 return null;
             }
 
-            /** @var TwillHttpBasicAuthModel|null $domain */
+            /** @var TwillRobotsTxtModel|null $domain */
             $domain = $domains->first();
 
             if ($domain !== null && $domain->domain === '*') {
                 $this->current = $domain;
             } else {
-                /** @var TwillHttpBasicAuthModel|null $domain */
+                /** @var TwillRobotsTxtModel|null $domain */
                 $domain = $domains->firstWhere('domain', $this->getDomain());
 
                 $this->current = $domain;
@@ -142,7 +142,7 @@ class TwillHttpBasicAuth
 
     protected function configureViews(): void
     {
-        View::addNamespace('http-basic-auth', __DIR__ . '/../resources/views');
+        View::addNamespace('robots-txt', __DIR__ . '/../resources/views');
     }
 
     public function getDomain(string|null $url = null): string|null
@@ -152,7 +152,7 @@ class TwillHttpBasicAuth
         return $url['host'] ?? null;
     }
 
-    public function setCurrent(TwillHttpBasicAuthModel $current): static
+    public function setCurrent(TwillRobotsTxtModel $current): static
     {
         $this->current = $current;
 
@@ -172,7 +172,7 @@ class TwillHttpBasicAuth
 
         $checkAuth = fn() => $this->checkAuth($request);
 
-        $rateLimitingKey = 'basic-auth:' . $this->readFromDatabase('username');
+        $rateLimitingKey = 'robots-txt:' . $this->readFromDatabase('username');
 
         $response = RateLimiter::attempt(
             $rateLimitingKey,

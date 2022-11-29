@@ -1,25 +1,25 @@
 <?php
 
-namespace A17\TwillHttpBasicAuth\Models;
+namespace A17\TwillRobotsTxt\Models;
 
 use A17\Twill\Models\Model;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Crypt;
 use A17\Twill\Models\Behaviors\HasRevisions;
-use A17\TwillHttpBasicAuth\Services\Helpers;
+use A17\TwillRobotsTxt\Services\Helpers;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use A17\TwillHttpBasicAuth\Models\Behaviors\Encrypt;
-use A17\TwillHttpBasicAuth\Support\Facades\TwillHttpBasicAuth as TwillHttpBasicAuthFacade;
+use A17\TwillRobotsTxt\Models\Behaviors\Encrypt;
+use A17\TwillRobotsTxt\Support\Facades\TwillRobotsTxt as TwillRobotsTxtFacade;
 
 /**
  * @property string|null $domain
  */
-class TwillHttpBasicAuth extends Model
+class TwillRobotsTxt extends Model
 {
     use HasRevisions;
     use Encrypt;
 
-    protected $table = 'twill_basic_auth';
+    protected $table = 'twill_robots_txt';
 
     protected $fillable = ['published', 'domain', 'username', 'password', 'allow_laravel_login', 'allow_twill_login'];
 
@@ -62,7 +62,7 @@ class TwillHttpBasicAuth extends Model
 
     public function revisions(): HasMany
     {
-        return $this->hasMany($this->getRevisionModel(), 'twill_basic_auth_id')->orderBy('created_at', 'desc');
+        return $this->hasMany($this->getRevisionModel(), 'twill_robots_txt_id')->orderBy('created_at', 'desc');
     }
 
     public function getDomainStringAttribute(): string|null
@@ -96,6 +96,6 @@ class TwillHttpBasicAuth extends Model
 
     public function getFromDotEnvAttribute(): string
     {
-        return TwillHttpBasicAuthFacade::hasDotEnv() ? 'yes' : 'no';
+        return TwillRobotsTxtFacade::hasDotEnv() ? 'yes' : 'no';
     }
 }

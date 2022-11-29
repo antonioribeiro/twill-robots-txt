@@ -1,14 +1,14 @@
 <?php
 
-namespace A17\TwillHttpBasicAuth;
+namespace A17\TwillRobotsTxt;
 
 use Illuminate\Support\Str;
 use A17\Twill\Facades\TwillCapsules;
 use Illuminate\Contracts\Http\Kernel;
 use A17\Twill\TwillPackageServiceProvider;
-use A17\TwillHttpBasicAuth\Http\Middleware;
-use A17\TwillHttpBasicAuth\Services\Helpers;
-use A17\TwillHttpBasicAuth\Support\TwillHttpBasicAuth;
+use A17\TwillRobotsTxt\Http\Middleware;
+use A17\TwillRobotsTxt\Services\Helpers;
+use A17\TwillRobotsTxt\Support\TwillRobotsTxt;
 
 class ServiceProvider extends TwillPackageServiceProvider
 {
@@ -38,17 +38,17 @@ class ServiceProvider extends TwillPackageServiceProvider
             $this->getPackageDirectory() . '/src',
         );
 
-        app()->singleton(TwillHttpBasicAuth::class, fn() => new TwillHttpBasicAuth());
+        app()->singleton(TwillRobotsTxt::class, fn() => new TwillRobotsTxt());
     }
 
     public function registerViews(): void
     {
-        $this->loadViewsFrom(__DIR__ . '/resources/views', 'twill-http-basic-auth');
+        $this->loadViewsFrom(__DIR__ . '/resources/views', 'twill-robots-txt');
     }
 
     public function registerConfig(): void
     {
-        $package = 'twill-http-basic-auth';
+        $package = 'twill-robots-txt';
 
         $path = __DIR__ . "/config/{$package}.php";
 
@@ -61,15 +61,15 @@ class ServiceProvider extends TwillPackageServiceProvider
 
     public function configureMiddeleware(): void
     {
-        if (config('twill-http-basic-auth.middleware.automatic')) {
+        if (config('twill-robots-txt.middleware.automatic')) {
             /**
              * @phpstan-ignore-next-line
              * @var \Illuminate\Foundation\Http\Kernel $kernel
              */
             $kernel = $this->app[Kernel::class];
 
-            foreach (config('twill-http-basic-auth.middleware.groups', []) as $group) {
-                $kernel->appendMiddlewareToGroup($group, config('twill-http-basic-auth.middleware.class'));
+            foreach (config('twill-robots-txt.middleware.groups', []) as $group) {
+                $kernel->appendMiddlewareToGroup($group, config('twill-robots-txt.middleware.class'));
             }
         }
     }

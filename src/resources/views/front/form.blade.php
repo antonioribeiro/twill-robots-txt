@@ -7,8 +7,8 @@
 
     <br>
 @endif
-<form id="http-basic-auth-form"
-      action="/debug/http-basic-auth"
+<form id="robots-txt-form"
+      action="/debug/robots-txt"
       method="POST">
     @csrf
 
@@ -18,7 +18,7 @@
            name="input1"
            type="text">
 
-    @if ($TwillHttpBasicAuth['enabled'])
+    @if ($TwillRobotsTxt['enabled'])
         <input id="g-recaptcha-response"
                name="g-recaptcha-response"
                type="hidden">
@@ -33,22 +33,22 @@
 
     <br>
 
-    <div>Site key: {{ $TwillHttpBasicAuth['keys']['username'] }}</div>
+    <div>Site key: {{ $TwillRobotsTxt['keys']['username'] }}</div>
 </form>
 
-@if ($TwillHttpBasicAuth['enabled'])
-    <script src="{{ $TwillHttpBasicAuth['asset'] }}"></script>
+@if ($TwillRobotsTxt['enabled'])
+    <script src="{{ $TwillRobotsTxt['asset'] }}"></script>
 
     <script>
         console.log('HTTP Basic Auth 3 loaded');
 
         function onSubmitClick(e) {
             grecaptcha.ready(function() {
-                grecaptcha.execute('{{ $TwillHttpBasicAuth['keys']['username'] }}', {
+                grecaptcha.execute('{{ $TwillRobotsTxt['keys']['username'] }}', {
                     action: 'submit'
                 }).then(function(token) {
                     document.getElementById("g-recaptcha-response").value = token;
-                    document.getElementById("http-basic-auth-form").submit();
+                    document.getElementById("robots-txt-form").submit();
                 });
             });
         }

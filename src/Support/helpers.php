@@ -1,10 +1,10 @@
 <?php
 
-use A17\TwillHttpBasicAuth\Services\Helpers;
-use A17\TwillHttpBasicAuth\Support\TwillHttpBasicAuth;
+use A17\TwillRobotsTxt\Services\Helpers;
+use A17\TwillRobotsTxt\Support\TwillRobotsTxt;
 
-if (!function_exists('http_basic_auth')) {
-    function http_basic_auth(): TwillHttpBasicAuth
+if (!function_exists('robots_txt')) {
+    function robots_txt(): TwillRobotsTxt
     {
         return Helpers::instance();
     }

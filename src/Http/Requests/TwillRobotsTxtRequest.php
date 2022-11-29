@@ -1,10 +1,10 @@
 <?php
 
-namespace A17\TwillHttpBasicAuth\Http\Requests;
+namespace A17\TwillRobotsTxt\Http\Requests;
 
 use A17\Twill\Http\Requests\Admin\Request;
 
-class TwillHttpBasicAuthRequest extends Request
+class TwillRobotsTxtRequest extends Request
 {
     public function rulesForCreate(): array
     {

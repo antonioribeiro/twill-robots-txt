@@ -4,11 +4,11 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateTwillHttpBasicAuthTables extends Migration
+class CreateTwillRobotsTxtTables extends Migration
 {
     public function up(): void
     {
-        Schema::create('twill_basic_auth', function (Blueprint $table) {
+        Schema::create('twill_robots_txt', function (Blueprint $table) {
             createDefaultTableFields($table);
 
             $table->string('domain')->nullable();
@@ -22,14 +22,14 @@ class CreateTwillHttpBasicAuthTables extends Migration
             $table->boolean('allow_twill_login')->default(false);
         });
 
-        Schema::create('twill_basic_auth_revisions', function (Blueprint $table) {
-            createDefaultRevisionsTableFields($table, 'twill_basic_auth', 'twill_basic_auth');
+        Schema::create('twill_robots_txt_revisions', function (Blueprint $table) {
+            createDefaultRevisionsTableFields($table, 'twill_robots_txt', 'twill_robots_txt');
         });
     }
 
     public function down(): void
     {
-        Schema::dropIfExists('twill_basic_auth_revisions');
-        Schema::dropIfExists('twill_basic_auth');
+        Schema::dropIfExists('twill_robots_txt_revisions');
+        Schema::dropIfExists('twill_robots_txt');
     }
 }

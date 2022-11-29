@@ -1,19 +1,19 @@
 <?php
 
-namespace A17\TwillHttpBasicAuth\Repositories;
+namespace A17\TwillRobotsTxt\Repositories;
 
 use A17\Twill\Repositories\ModuleRepository;
 use A17\Twill\Repositories\Behaviors\HandleRevisions;
-use A17\TwillHttpBasicAuth\Models\TwillHttpBasicAuth;
+use A17\TwillRobotsTxt\Models\TwillRobotsTxt;
 
 /**
  * @method \Illuminate\Database\Eloquent\Builder published()
  */
-class TwillHttpBasicAuthRepository extends ModuleRepository
+class TwillRobotsTxtRepository extends ModuleRepository
 {
     use HandleRevisions;
 
-    public function __construct(TwillHttpBasicAuth $model)
+    public function __construct(TwillRobotsTxt $model)
     {
         $this->model = $model;
     }

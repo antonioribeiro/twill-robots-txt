@@ -1,6 +1,6 @@
 <?php
 
-namespace A17\TwillHttpBasicAuth\Database\Seeds;
+namespace A17\TwillRobotsTxt\Database\Seeds;
 
 use Illuminate\Database\Seeder;
 

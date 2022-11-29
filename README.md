@@ -20,7 +20,7 @@ A middleware is automatically added to all `web` routes, but you can configure t
 
     'groups' => ['web'],
 
-    'class' => \A17\TwillHttpBasicAuth\Http\Middleware::class,
+    'class' => \A17\TwillRobotsTxt\Http\Middleware::class,
 ],
 ```
 
@@ -33,13 +33,13 @@ If you don't want to share a single username and password with everyone that wil
 ### Require the Composer package:
 
 ``` bash
-composer require area17/twill-http-basic-auth
+composer require area17/twill-robots-txt
 ```
 
 ### Publish the configuration
 
 ``` bash
-php artisan vendor:publish --provider="A17\TwillHttpBasicAuth\ServiceProvider"
+php artisan vendor:publish --provider="A17\TwillRobotsTxt\ServiceProvider"
 ```
 
 ### Load Capsule helpers by adding calling the loader to your AppServiceProvider:
@@ -52,7 +52,7 @@ php artisan vendor:publish --provider="A17\TwillHttpBasicAuth\ServiceProvider"
  */
 public function register()
 {
-    \A17\TwillHttpBasicAuth\Services\Helpers::load();
+    \A17\TwillRobotsTxt\Services\Helpers::load();
 }
 ```
 

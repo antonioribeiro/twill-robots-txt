@@ -1,24 +1,24 @@
 @extends('twill::layouts.form')
 
 @php
-    use A17\TwillHttpBasicAuth\Support\Facades\TwillHttpBasicAuth;
+    use A17\TwillRobotsTxt\Support\Facades\TwillRobotsTxt;
 @endphp
 
 @section('contentFields')
     @formField('input', [
-    'type' => TwillHttpBasicAuth::config('inputs.username.type'),
+    'type' => TwillRobotsTxt::config('inputs.username.type'),
     'name' => 'username',
     'label' => 'Username',
     'required' => true,
-    'disabled' => TwillHttpBasicAuth::hasDotEnv(),
+    'disabled' => TwillRobotsTxt::hasDotEnv(),
     ])
 
     @formField('input', [
-    'type' => TwillHttpBasicAuth::config('inputs.password.type'),
+    'type' => TwillRobotsTxt::config('inputs.password.type'),
     'name' => 'password',
     'label' => 'Password',
     'required' => true,
-    'disabled' => TwillHttpBasicAuth::hasDotEnv(),
+    'disabled' => TwillRobotsTxt::hasDotEnv(),
     'password' => true,
     ])
 
@@ -27,7 +27,7 @@
 
     'label' => 'Allow Laravel users to login',
 
-    'disabled' => TwillHttpBasicAuth::hasDotEnv(),
+    'disabled' => TwillRobotsTxt::hasDotEnv(),
     ])
 
     @formField('checkbox', [
@@ -35,6 +35,6 @@
 
     'label' => "Allow Twill users to login",
 
-    'disabled' => TwillHttpBasicAuth::hasDotEnv(),
+    'disabled' => TwillRobotsTxt::hasDotEnv(),
     ])
 @stop

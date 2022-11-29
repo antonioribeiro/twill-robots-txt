@@ -1,6 +1,6 @@
 <?php
 
-namespace A17\TwillHttpBasicAuth\Support\Facades;
+namespace A17\TwillRobotsTxt\Support\Facades;
 
 use Illuminate\Support\Facades\Route as IlluminateRoute;
 

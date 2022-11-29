@@ -1,12 +1,12 @@
 {
-  "name": "area17/twill-http-basic-auth",
+  "name": "area17/twill-robots-txt",
   "description": "A Twill Capsule to add and handle HTTP Basic Auth",
-  "homepage": "https://github.com/area17/twill-http-basic-auths",
+  "homepage": "https://github.com/area17/twill-robots-txts",
   "license": "MIT",
   "require": {
     "php": ">=8.0",
     "area17/twill": "^2.7|^3.0",
-    "area17/http-basic-auth": "1.x-dev"
+    "area17/robots-txt": "1.x-dev"
   },
   "require-dev": {
       "nunomaduro/larastan": "^2.0",
@@ -17,18 +17,18 @@
   "repositories": [
       {
           "type": "vcs",
-          "url": "https://github.com/area17/http-basic-auth"
+          "url": "https://github.com/area17/robots-txt"
       }
   ],
   "autoload": {
     "psr-4": {
-      "A17\\TwillHttpBasicAuth\\": "src"
+      "A17\\TwillRobotsTxt\\": "src"
     }
   },
   "extra": {
     "laravel": {
       "providers": [
-        "A17\\TwillHttpBasicAuth\\ServiceProvider"
+        "A17\\TwillRobotsTxt\\ServiceProvider"
       ]
     }
   },

@@ -22,7 +22,7 @@ return [
 
         'groups' => ['web'],
 
-        'class' => \A17\TwillHttpBasicAuth\Http\Middleware::class,
+        'class' => \A17\TwillRobotsTxt\Http\Middleware::class,
     ],
 
     'routes' => [

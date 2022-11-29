@@ -1,6 +1,6 @@
 <?php
 
-namespace A17\TwillHttpBasicAuth\Models\Behaviors;
+namespace A17\TwillRobotsTxt\Models\Behaviors;
 
 use Throwable;
 use Illuminate\Support\Facades\Crypt;

@@ -1,6 +1,6 @@
 <?php
 
-namespace A17\TwillHttpBasicAuth\Http\Controllers;
+namespace A17\TwillRobotsTxt\Http\Controllers;
 
 use Illuminate\View\View;
 use Illuminate\Http\Request;
@@ -10,11 +10,11 @@ use Illuminate\Support\Facades\URL;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Redirect;
 use A17\Twill\Http\Controllers\Admin\ModuleController;
-use A17\TwillHttpBasicAuth\Models\TwillHttpBasicAuth;
-use A17\TwillHttpBasicAuth\Repositories\TwillHttpBasicAuthRepository;
-use A17\TwillHttpBasicAuth\Support\Facades\TwillHttpBasicAuth as TwillHttpBasicAuthFacade;
+use A17\TwillRobotsTxt\Models\TwillRobotsTxt;
+use A17\TwillRobotsTxt\Repositories\TwillRobotsTxtRepository;
+use A17\TwillRobotsTxt\Support\Facades\TwillRobotsTxt as TwillRobotsTxtFacade;
 
-class TwillHttpBasicAuthController extends ModuleController
+class TwillRobotsTxtController extends ModuleController
 {
     protected $moduleName = 'twillHttpBasicAuth';
 
@@ -71,28 +71,28 @@ class TwillHttpBasicAuthController extends ModuleController
 
     protected function getViewPrefix(): string|null
     {
-        return 'twill-http-basic-auth::admin';
+        return 'twill-robots-txt::admin';
     }
 
     public function generateDomains(): void
     {
-        if (DB::table('twill_basic_auth')->count() !== 0) {
+        if (DB::table('twill_robots_txt')->count() !== 0) {
             return;
         }
 
-        $appDomain = TwillHttpBasicAuthFacade::getDomain(config('app.url'));
+        $appDomain = TwillRobotsTxtFacade::getDomain(config('app.url'));
 
-        $currentDomain = TwillHttpBasicAuthFacade::getDomain(URL::current());
+        $currentDomain = TwillRobotsTxtFacade::getDomain(URL::current());
 
         /** @phpstan-ignore-next-line  */
-        app(TwillHttpBasicAuthRepository::class)->create([
+        app(TwillRobotsTxtRepository::class)->create([
             'domain' => '*',
             'published' => false,
         ]);
 
         if (filled($currentDomain)) {
             /** @phpstan-ignore-next-line  */
-            app(TwillHttpBasicAuthRepository::class)->create([
+            app(TwillRobotsTxtRepository::class)->create([
                 'domain' => $currentDomain,
                 'published' => false,
             ]);
@@ -100,7 +100,7 @@ class TwillHttpBasicAuthController extends ModuleController
 
         if (filled($appDomain) && $appDomain !== $currentDomain) {
             /** @phpstan-ignore-next-line  */
-            app(TwillHttpBasicAuthRepository::class)->create([
+            app(TwillRobotsTxtRepository::class)->create([
                 'domain' => $appDomain,
                 'published' => false,
             ]);
@@ -109,7 +109,7 @@ class TwillHttpBasicAuthController extends ModuleController
 
     public function setIndexOptions(): void
     {
-        $this->indexOptions = ['create' => !TwillHttpBasicAuthFacade::allDomainsEnabled()];
+        $this->indexOptions = ['create' => !TwillRobotsTxtFacade::allDomainsEnabled()];
     }
 
     /**
@@ -119,7 +119,7 @@ class TwillHttpBasicAuthController extends ModuleController
      */
     protected function getIndexItems($scopes = [], $forcePagination = false)
     {
-        if (TwillHttpBasicAuthFacade::allDomainsEnabled()) {
+        if (TwillRobotsTxtFacade::allDomainsEnabled()) {
             $scopes['domain'] = '*';
         }
 
