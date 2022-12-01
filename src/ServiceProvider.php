@@ -22,6 +22,8 @@ class ServiceProvider extends TwillPackageServiceProvider
 
         $this->registerRoutes();
 
+        $this->registerViews();
+
         parent::boot();
     }
 
@@ -36,6 +38,11 @@ class ServiceProvider extends TwillPackageServiceProvider
         );
 
         app()->singleton(TwillRobotsTxt::class, fn() => new TwillRobotsTxt());
+    }
+
+    public function registerViews(): void
+    {
+        $this->loadViewsFrom(__DIR__ . '/resources/views', 'twill-robots-txt');
     }
 
     public function registerConfig(): void
