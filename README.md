@@ -8,25 +8,7 @@ This Twill Capsule is intended to enable developers to configure Robots TXT on t
 
 ## Domains
 
-You add as many domains as you need and configure different passwords for each. Once you enable the `all domains (*)` entry, the same configuration will be used for all, and all other domains will be hidden.
-
-## Middleware
-
-A middleware is automatically added to all `web` routes, but you can configure this behaviour or even disable it to configure your middleware yourself:  
-
-``` php
-'middleware' => [
-    'automatic' => true,
-
-    'groups' => ['web'],
-
-    'class' => \A17\TwillRobotsTxt\Http\Middleware::class,
-],
-```
-
-## Using authentication
-
-If you don't want to share a single username and password with everyone that will access your pages, you can configure the package to allow existing users, both on Twill (CMS) and/or Laravel (frontend), to use their own passwords to pass Robots TXT.
+You add as many domains as you need and configure different `robots.txt` values for each. If you enable `.env` confifuration, an `all domains (*)` entry will appear, the same configuration will be used for all domains, and all other domains will be hidden.
 
 ## Installing
 
@@ -61,12 +43,10 @@ public function register()
 The configuration works both on `.env` or in the CMS settings. If you set them on `.env` the CMS settings will be disabled and overloded by `.env`. 
 
 ```dotenv
-TWILL_ROBOTS_TXT_ENABLED=true
-TWILL_ROBOTS_TXT_USERNAME=frontend
-TWILL_ROBOTS_TXT_PASSWORD=secret
-TWILL_ROBOTS_TXT_RATE_LIMITING_ATTEMPTS=5
-TWILL_ROBOTS_TXT_TWILL_DATABASE_LOGIN_ENABLED=true
-TWILL_ROBOTS_TXT_LARAVEL_DATABASE_LOGIN_ENABLED=true
+TWILL_ROBOTS_TXT_PROTECTED=true
+TWILL_ROBOTS_TXT_RATE_LIMITING_ATTEMPTS=10
+TWILL_ROBOTS_TXT_CONTENTS_PROTECTED="User-agent: *\nDisallow: /"
+TWILL_ROBOTS_TXT_CONTENTS_UNPROTECTED="User-agent: *\nAllow: /"
 ```
 
 ## Contribute

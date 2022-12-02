@@ -24,7 +24,7 @@ class TwillRobotsTxt
 
     protected bool|null $isConfigured = null;
 
-    protected bool|null $enabled = null;
+    protected bool|null $protected = null;
 
     protected TwillRobotsTxtModel|null $current = null;
 
@@ -32,7 +32,7 @@ class TwillRobotsTxt
     {
         //        $this->setConfigured();
         //
-        //        $this->setEnabled();
+        //        $this->setProtected();
         //
         //        $this->configureViews();
     }
@@ -48,29 +48,29 @@ class TwillRobotsTxt
         return Arr::get((array) $this->config, $key) ?? $default;
     }
 
-    public function enabled(): bool
+    public function protected(): bool
     {
-        return $this->enabled ?? ($this->hasDotEnv() ? $this->config('enabled') : true);
+        return $this->protected ?? ($this->hasDotEnv() ? $this->config('protected') : true);
     }
 
-    public function unprotected(bool $force = false): string|null
+    public function unprotectedContents(bool $force = false): string|null
     {
-        return $this->get('keys.unprotected', 'unprotected', $force);
+        return $this->get('contents.unprotected', 'unprotected', $force);
     }
 
-    public function protected(bool $force = false): string|null
+    public function protectedContents(bool $force = false): string|null
     {
-        return $this->get('keys.protected', 'protected', $force);
+        return $this->get('contents.protected', 'protected', $force);
     }
 
     public function published(bool $force = false): string|null
     {
-        return $this->get('enabled', 'published', $force);
+        return $this->get('protected', 'published', $force);
     }
 
     public function get(string $configKey, string $databaseColumn, bool $force = false): string|null
     {
-        if (!$force && (!$this->isConfigured() || !$this->enabled())) {
+        if (!$force && (!$this->isConfigured() || !$this->protected())) {
             return null;
         }
 
@@ -121,13 +121,13 @@ class TwillRobotsTxt
 
     public function hasDotEnv(): bool
     {
-        return filled($this->config('keys.protected') ?? null) || filled($this->config('keys.unprotected') ?? null);
+        return filled($this->config('contents.protected') ?? null) && filled($this->config('contents.unprotected') ?? null);
     }
 
     protected function isConfigured(): bool
     {
         return $this->isConfigured ??
-            $this->hasDotEnv() || (filled($this->protected(true)) && filled($this->unprotected(true)));
+            $this->hasDotEnv() || (filled($this->protectedContents(true)) && filled($this->unprotectedContents(true)));
     }
 
     protected function setConfigured(): void
@@ -135,9 +135,9 @@ class TwillRobotsTxt
         $this->isConfigured = $this->isConfigured();
     }
 
-    protected function setEnabled(): void
+    protected function setProtected(): void
     {
-        $this->enabled = $this->enabled();
+        $this->protected = $this->protected();
     }
 
     public function getDomain(string|null $url = null): string|null
@@ -154,7 +154,7 @@ class TwillRobotsTxt
         return $this;
     }
 
-    public function allDomainsEnabled(): bool
+    public function allDomainsPublished(): bool
     {
         return $this->hasDotEnv() || $this->readFromDatabase('domain') === '*';
     }

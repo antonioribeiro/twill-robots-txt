@@ -73,8 +73,8 @@ class TwillRobotsTxtController extends ModuleController
         app(TwillRobotsTxtRepository::class)->create([
             'domain' => '*',
             'published' => false,
-            'protected' => TwillRobotsTxtFacade::config('defaults.protected'),
-            'unprotected' => TwillRobotsTxtFacade::config('defaults.unprotected'),
+            'protected' => TwillRobotsTxtFacade::config('contents.protected'),
+            'unprotected' => TwillRobotsTxtFacade::config('contents.unprotected'),
         ]);
 
         if (filled($currentDomain)) {
@@ -82,8 +82,8 @@ class TwillRobotsTxtController extends ModuleController
             app(TwillRobotsTxtRepository::class)->create([
                 'domain' => $currentDomain,
                 'published' => true,
-                'protected' => TwillRobotsTxtFacade::config('defaults.protected'),
-                'unprotected' => TwillRobotsTxtFacade::config('defaults.unprotected'),
+                'protected' => TwillRobotsTxtFacade::config('contents.protected'),
+                'unprotected' => TwillRobotsTxtFacade::config('contents.unprotected'),
             ]);
         }
 
@@ -92,15 +92,15 @@ class TwillRobotsTxtController extends ModuleController
             app(TwillRobotsTxtRepository::class)->create([
                 'domain' => $appDomain,
                 'published' => true,
-                'protected' => TwillRobotsTxtFacade::config('defaults.protected'),
-                'unprotected' => TwillRobotsTxtFacade::config('defaults.unprotected'),
+                'protected' => TwillRobotsTxtFacade::config('contents.protected'),
+                'unprotected' => TwillRobotsTxtFacade::config('contents.unprotected'),
             ]);
         }
     }
 
     public function setIndexOptions(): void
     {
-        $this->indexOptions = ['create' => !TwillRobotsTxtFacade::allDomainsEnabled()];
+        $this->indexOptions = ['create' => !TwillRobotsTxtFacade::allDomainsPublished()];
     }
 
     /**
@@ -110,7 +110,7 @@ class TwillRobotsTxtController extends ModuleController
      */
     protected function getIndexItems($scopes = [], $forcePagination = false)
     {
-        if (TwillRobotsTxtFacade::allDomainsEnabled()) {
+        if (TwillRobotsTxtFacade::allDomainsPublished()) {
             $scopes['domain'] = '*';
         } else {
             $all = TwillRobotsTxt::where('domain', '*')->first();

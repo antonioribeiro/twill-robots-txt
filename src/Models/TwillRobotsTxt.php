@@ -25,6 +25,24 @@ class TwillRobotsTxt extends Model
 
     protected $appends = ['domain_string', 'status', 'from_dot_env'];
 
+    public function getProtectedAttribute(): string|null
+    {
+        return $this->decrypt(
+            \A17\TwillHttpBasicAuth\Services\Helpers::instance()
+                                                    ->setCurrent($this)
+                                                    ->protectedContents(true),
+        );
+    }
+
+    public function getUnprotectedAttribute(): string|null
+    {
+        return $this->decrypt(
+            \A17\TwillHttpBasicAuth\Services\Helpers::instance()
+                                                    ->setCurrent($this)
+                                                    ->unprotectedContents(true),
+        );
+    }
+
     public function getPublishedAttribute(): string|null
     {
         return Helpers::instance()

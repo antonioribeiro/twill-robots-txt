@@ -11,15 +11,19 @@ Allow: /
 TXT;
 
 return [
-    'enabled' => env('TWILL_ROBOTS_TXT_ENABLED', false),
+    'protected' => env('TWILL_ROBOTS_TXT_PROTECTED', true),
 
-    'defaults' => [
-        'protected' => str_replace('\n', "\n", env('TWILL_ROBOTS_TXT_PROTECTED', $protected)),
-        'unprotected' => str_replace('\n', "\n", env('TWILL_ROBOTS_TXT_UNPROTECTED', $unprotected)),
+    'contents' => [
+        'protected' => str_replace('\n', "\n", env('TWILL_ROBOTS_TXT_PROTECTED_CONTENTS', $protected)),
+        'unprotected' => str_replace('\n', "\n", env('TWILL_ROBOTS_TXT_UNPROTECTED_CONTENTS', $unprotected)),
     ],
 
     'route' => [
         'controller' => A17\TwillRobotsTxt\Http\Controllers\TwillRobotsTxtFrontController::class,
         'action' => 'robots',
+    ],
+
+    'rate-limiting' => [
+        'attemps-per-minute' => env('TWILL_ROBOTS_TXT_RATE_LIMITING_ATTEMPTS', 500),
     ],
 ];
