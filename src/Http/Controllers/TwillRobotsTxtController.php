@@ -9,8 +9,8 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Redirect;
-use A17\Twill\Http\Controllers\Admin\ModuleController;
 use A17\TwillRobotsTxt\Models\TwillRobotsTxt;
+use A17\Twill\Http\Controllers\Admin\ModuleController;
 use A17\TwillRobotsTxt\Repositories\TwillRobotsTxtRepository;
 use A17\TwillRobotsTxt\Support\Facades\TwillRobotsTxt as TwillRobotsTxtFacade;
 
@@ -67,14 +67,14 @@ class TwillRobotsTxtController extends ModuleController
 
         $appDomain = TwillRobotsTxtFacade::getDomain(config('app.url'));
 
-        $currentDomain = TwillRobotsTxtFacade::getDomain(URL::current());
+        $currentDomain = TwillRobotsTxtFacade::getDomain();
 
         /** @phpstan-ignore-next-line  */
         app(TwillRobotsTxtRepository::class)->create([
             'domain' => '*',
             'published' => false,
-            'protected' => TwillRobotsTxtFacade::config('contents.protected'),
-            'unprotected' => TwillRobotsTxtFacade::config('contents.unprotected'),
+            'protected' => TwillRobotsTxtFacade::config('contents.default.protected'),
+            'unprotected' => TwillRobotsTxtFacade::config('contents.default.unprotected'),
         ]);
 
         if (filled($currentDomain)) {
@@ -82,8 +82,8 @@ class TwillRobotsTxtController extends ModuleController
             app(TwillRobotsTxtRepository::class)->create([
                 'domain' => $currentDomain,
                 'published' => true,
-                'protected' => TwillRobotsTxtFacade::config('contents.protected'),
-                'unprotected' => TwillRobotsTxtFacade::config('contents.unprotected'),
+                'protected' => TwillRobotsTxtFacade::config('contents.default.protected'),
+                'unprotected' => TwillRobotsTxtFacade::config('contents.default.unprotected'),
             ]);
         }
 
@@ -92,8 +92,8 @@ class TwillRobotsTxtController extends ModuleController
             app(TwillRobotsTxtRepository::class)->create([
                 'domain' => $appDomain,
                 'published' => true,
-                'protected' => TwillRobotsTxtFacade::config('contents.protected'),
-                'unprotected' => TwillRobotsTxtFacade::config('contents.unprotected'),
+                'protected' => TwillRobotsTxtFacade::config('contents.default.protected'),
+                'unprotected' => TwillRobotsTxtFacade::config('contents.default.unprotected'),
             ]);
         }
     }
@@ -112,10 +112,6 @@ class TwillRobotsTxtController extends ModuleController
     {
         if (TwillRobotsTxtFacade::allDomainsPublished()) {
             $scopes['domain'] = '*';
-        } else {
-            $all = TwillRobotsTxt::where('domain', '*')->first();
-
-            $scopes['exceptIds'] = [$all->id];
         }
 
         return parent::getIndexItems($scopes, $forcePagination);

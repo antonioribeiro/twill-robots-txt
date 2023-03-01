@@ -11,11 +11,19 @@ Allow: /
 TXT;
 
 return [
-    'protected' => env('TWILL_ROBOTS_TXT_PROTECTED', true),
+    'protected' => ($isProtected = env('TWILL_ROBOTS_TXT_PROTECTED', false)),
 
     'contents' => [
-        'protected' => str_replace('\n', "\n", env('TWILL_ROBOTS_TXT_PROTECTED_CONTENTS', $protected)),
-        'unprotected' => str_replace('\n', "\n", env('TWILL_ROBOTS_TXT_UNPROTECTED_CONTENTS', $unprotected)),
+        'protected' => str_replace('\n', "\n", env('TWILL_ROBOTS_TXT_PROTECTED_CONTENTS', $isProtected ? $protected : null)),
+
+        'unprotected' => str_replace('\n', "\n", env('TWILL_ROBOTS_TXT_UNPROTECTED_CONTENTS', $isProtected ? $unprotected : null)),
+
+        'default' => [
+            'protected' => $protected,
+
+            'unprotected' => $unprotected,
+
+        ],
     ],
 
     'route' => [

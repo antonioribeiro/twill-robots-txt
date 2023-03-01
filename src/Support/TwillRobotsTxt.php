@@ -3,12 +3,13 @@
 namespace A17\TwillRobotsTxt\Support;
 
 use Illuminate\Support\Arr;
+use A17\RobotsTxt\RobotsTxt;
 use Illuminate\Http\Request;
 use A17\RobotsTxt\Middleware;
 use Illuminate\Http\Client\Response;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\View;
-use A17\RobotsTxt\RobotsTxt;
+use A17\TwillRobotsTxt\Services\Cache;
 use Illuminate\Support\Facades\RateLimiter;
 use A17\TwillRobotsTxt\Models\Behaviors\Encrypt;
 use A17\TwillRobotsTxt\Repositories\TwillRobotsTxtRepository;
@@ -16,7 +17,7 @@ use A17\TwillRobotsTxt\Models\TwillRobotsTxt as TwillRobotsTxtModel;
 
 class TwillRobotsTxt
 {
-    use Encrypt;
+    use Encrypt, Cache;
 
     public const DEFAULT_ERROR_MESSAGE = 'Invisible captcha failed.';
 
@@ -79,40 +80,9 @@ class TwillRobotsTxt
 
     protected function readFromDatabase(string $key): string|bool|null
     {
-        if (blank($this->current)) {
-            $domains = app(TwillRobotsTxtRepository::class)->orderBy('domain');
+        $domain = $this->getCurrent();
 
-            if ($this->hasDotEnv()) {
-                $domains->where('domain', '*');
-            } else {
-                $domains->where('domain', $this->getDomain());
-            }
-
-            $domains = $domains->get();
-
-            $domains = $domains->filter(
-                fn($domain) => filled($domain->getAttributes()['protected']) &&
-                    filled($domain->getAttributes()['unprotected']),
-            );
-
-            if ($domains->isEmpty()) {
-                return null;
-            }
-
-            /** @var TwillRobotsTxtModel|null $domain */
-            $domain = $domains->first();
-
-            if ($domain !== null && $domain->domain === '*') {
-                $this->current = $domain;
-            } else {
-                /** @var TwillRobotsTxtModel|null $domain */
-                $domain = $domains->firstWhere('domain', $this->getDomain());
-
-                $this->current = $domain;
-            }
-        }
-
-        if ($this->current === null) {
+        if ($domain === null) {
             return null;
         }
 
@@ -121,7 +91,9 @@ class TwillRobotsTxt
 
     public function hasDotEnv(): bool
     {
-        return filled($this->config('contents.protected') ?? null) && filled($this->config('contents.unprotected') ?? null);
+        return $this->config('contents.protected') === true &&
+            filled($this->config('contents.protected') ?? null) &&
+            filled($this->config('contents.unprotected') ?? null);
     }
 
     protected function isConfigured(): bool
@@ -142,6 +114,10 @@ class TwillRobotsTxt
 
     public function getDomain(string|null $url = null): string|null
     {
+        if ($url === null) {
+            return request()->getHost();
+        }
+
         $url = parse_url($url ?? request()->url());
 
         return $url['host'] ?? null;
@@ -159,10 +135,39 @@ class TwillRobotsTxt
         return $this->hasDotEnv() || $this->readFromDatabase('domain') === '*';
     }
 
-    public function getCurrent()
+    public function getCurrent(): TwillRobotsTxtModel|null
     {
+        if (filled($this->current)) {
+            return $this->current;
+        }
+
         if (blank($this->current)) {
-            $this->readFromDatabase('domain');
+            $this->current = $this->cacheGet('current-domain');
+        }
+
+        if (blank($this->current)) {
+            $domains = app(TwillRobotsTxtRepository::class)
+                ->published()
+                ->orderBy('domain')
+                ->get();
+
+            if ($domains->isEmpty()) {
+                return null;
+            }
+
+            /** @var TwillRobotsTxtModel|null $domain */
+            $domain = $domains->first();
+
+            if ($domain !== null && $domain->domain === '*') {
+                $this->current = $domain;
+            } else {
+                /** @var TwillRobotsTxtModel|null $domain */
+                $domain = $domains->firstWhere('domain', $this->getDomain());
+
+                $this->current = $domain;
+            }
+
+            $this->cachePut('current-domain', $this->current);
         }
 
         return $this->current;

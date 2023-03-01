@@ -25,6 +25,10 @@ class TwillRobotsTxt extends Model
 
     protected $appends = ['domain_string', 'status', 'from_dot_env'];
 
+    protected $casts = [
+        'published' => 'bool',
+    ];
+
     public function getProtectedAttribute(): string|null
     {
         return $this->decrypt(
@@ -43,9 +47,9 @@ class TwillRobotsTxt extends Model
         );
     }
 
-    public function getPublishedAttribute(): string|null
+    public function getPublishedAttribute(): bool
     {
-        return Helpers::instance()
+        return (bool) Helpers::instance()
             ->setCurrent($this)
             ->published(true);
     }
@@ -87,5 +91,12 @@ class TwillRobotsTxt extends Model
     public function getFromDotEnvAttribute(): string
     {
         return TwillRobotsTxtFacade::hasDotEnv() ? 'yes' : 'no';
+    }
+
+    public function save(array $options = [])
+    {
+        TwillRobotsTxtFacade::flushCache();
+
+        return parent::save($options);
     }
 }
