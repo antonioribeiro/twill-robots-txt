@@ -28,7 +28,7 @@ class TwillRobotsTxt extends Model
     public function getProtectedAttribute(): string|null
     {
         return $this->decrypt(
-            \A17\TwillHttpBasicAuth\Services\Helpers::instance()
+            \A17\TwillRobotsTxt\Services\Helpers::instance()
                                                     ->setCurrent($this)
                                                     ->protectedContents(true),
         );
@@ -37,7 +37,7 @@ class TwillRobotsTxt extends Model
     public function getUnprotectedAttribute(): string|null
     {
         return $this->decrypt(
-            \A17\TwillHttpBasicAuth\Services\Helpers::instance()
+            \A17\TwillRobotsTxt\Services\Helpers::instance()
                                                     ->setCurrent($this)
                                                     ->unprotectedContents(true),
         );
