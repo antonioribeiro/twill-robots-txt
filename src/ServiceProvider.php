@@ -16,9 +16,13 @@ class ServiceProvider extends TwillPackageServiceProvider
 
     public function boot(): void
     {
-        $this->registerThisCapsule();
-
         $this->registerConfig();
+
+        if (!config('twill-robots-txt.enabled', true)) {
+            return;
+        }
+
+        $this->registerThisCapsule();
 
         $this->registerRoutes();
 
@@ -35,6 +39,9 @@ class ServiceProvider extends TwillPackageServiceProvider
             Str::afterLast($namespace, '\\'),
             $namespace,
             $this->getPackageDirectory() . '/src',
+            null, // $singular
+            true, // $enabled
+            config('twill-robots-txt.navigation.automatic', true),
         );
 
         app()->singleton(TwillRobotsTxt::class, fn() => new TwillRobotsTxt());

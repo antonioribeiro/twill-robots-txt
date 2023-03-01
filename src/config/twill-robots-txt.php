@@ -11,6 +11,8 @@ Allow: /
 TXT;
 
 return [
+    'enabled' => env('TWILL_ROBOTS_TXT_ENABLED', true),
+
     'protected' => ($isProtected = env('TWILL_ROBOTS_TXT_PROTECTED', false)),
 
     'contents' => [
@@ -34,4 +36,8 @@ return [
     'rate-limiting' => [
         'attemps-per-minute' => env('TWILL_ROBOTS_TXT_RATE_LIMITING_ATTEMPTS', 500),
     ],
+
+    'navigation' => [
+        'automatic' => true,
+    ]
 ];
