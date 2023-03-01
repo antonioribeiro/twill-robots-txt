@@ -132,7 +132,7 @@ class TwillRobotsTxt
 
     public function allDomainsPublished(): bool
     {
-        return $this->hasDotEnv() || $this->readFromDatabase('domain') === '*';
+        return false;
     }
 
     public function getCurrent(): TwillRobotsTxtModel|null
@@ -147,7 +147,6 @@ class TwillRobotsTxt
 
         if (blank($this->current)) {
             $domains = app(TwillRobotsTxtRepository::class)
-                ->published()
                 ->orderBy('domain')
                 ->get();
 
@@ -156,16 +155,9 @@ class TwillRobotsTxt
             }
 
             /** @var TwillRobotsTxtModel|null $domain */
-            $domain = $domains->first();
+            $domain = $domains->firstWhere('domain', $this->getDomain());
 
-            if ($domain !== null && $domain->domain === '*') {
-                $this->current = $domain;
-            } else {
-                /** @var TwillRobotsTxtModel|null $domain */
-                $domain = $domains->firstWhere('domain', $this->getDomain());
-
-                $this->current = $domain;
-            }
+            $this->current = $domain;
 
             $this->cachePut('current-domain', $this->current);
         }

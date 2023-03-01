@@ -69,14 +69,6 @@ class TwillRobotsTxtController extends ModuleController
 
         $currentDomain = TwillRobotsTxtFacade::getDomain();
 
-        /** @phpstan-ignore-next-line  */
-        app(TwillRobotsTxtRepository::class)->create([
-            'domain' => '*',
-            'published' => false,
-            'protected' => TwillRobotsTxtFacade::config('contents.default.protected'),
-            'unprotected' => TwillRobotsTxtFacade::config('contents.default.unprotected'),
-        ]);
-
         if (filled($currentDomain)) {
             /** @phpstan-ignore-next-line  */
             app(TwillRobotsTxtRepository::class)->create([
@@ -101,19 +93,5 @@ class TwillRobotsTxtController extends ModuleController
     public function setIndexOptions(): void
     {
         $this->indexOptions = ['create' => !TwillRobotsTxtFacade::allDomainsPublished()];
-    }
-
-    /**
-     * @param array $scopes
-     * @param bool $forcePagination
-     * @return \Illuminate\Database\Eloquent\Collection
-     */
-    protected function getIndexItems($scopes = [], $forcePagination = false)
-    {
-        if (TwillRobotsTxtFacade::allDomainsPublished()) {
-            $scopes['domain'] = '*';
-        }
-
-        return parent::getIndexItems($scopes, $forcePagination);
     }
 }

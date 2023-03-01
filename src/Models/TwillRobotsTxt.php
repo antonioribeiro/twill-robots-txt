@@ -61,13 +61,7 @@ class TwillRobotsTxt extends Model
 
     public function getDomainStringAttribute(): string|null
     {
-        $domain = $this->domain;
-
-        if ($domain === '*') {
-            return '* (all domains)';
-        }
-
-        return $domain;
+        return $this->domain;
     }
 
     public function getConfiguredAttribute(): bool
@@ -79,10 +73,6 @@ class TwillRobotsTxt extends Model
     {
         if ($this->published && $this->configured) {
             return 'protected';
-        }
-
-        if ($this->domain === '*') {
-            return 'disabled';
         }
 
         return 'unprotected';
