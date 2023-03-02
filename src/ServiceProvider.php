@@ -7,7 +7,7 @@ use A17\Twill\Facades\TwillCapsules;
 use Illuminate\Support\Facades\Route;
 use A17\TwillRobotsTxt\Services\Helpers;
 use A17\Twill\TwillPackageServiceProvider;
-use A17\TwillRobotsTxt\Support\TwillRobotsTxt;
+use A17\TwillRobotsTxt\Services\TwillRobotsTxt;
 
 class ServiceProvider extends TwillPackageServiceProvider
 {
@@ -35,6 +35,7 @@ class ServiceProvider extends TwillPackageServiceProvider
     {
         $namespace = $this->getCapsuleNamespace();
 
+        /** @phpstan-ignore-next-line */
         TwillCapsules::registerPackageCapsule(
             Str::afterLast($namespace, '\\'),
             $namespace,
@@ -65,7 +66,7 @@ class ServiceProvider extends TwillPackageServiceProvider
         ]);
     }
 
-    public function registerRoutes()
+    public function registerRoutes(): void
     {
         Route::get('/robots.txt', [
             config('twill-robots-txt.route.controller'),

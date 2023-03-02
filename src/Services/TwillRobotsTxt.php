@@ -1,11 +1,10 @@
 <?php
 
-namespace A17\TwillRobotsTxt\Support;
+namespace A17\TwillRobotsTxt\Services;
 
 use Illuminate\Support\Arr;
 use A17\RobotsTxt\RobotsTxt;
 use Illuminate\Http\Request;
-use A17\RobotsTxt\Middleware;
 use Illuminate\Http\Client\Response;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\View;
@@ -15,9 +14,15 @@ use A17\TwillRobotsTxt\Models\Behaviors\Encrypt;
 use A17\TwillRobotsTxt\Repositories\TwillRobotsTxtRepository;
 use A17\TwillRobotsTxt\Models\TwillRobotsTxt as TwillRobotsTxtModel;
 
+/**
+ * @property string $protected
+ * @property string $unprotected
+ * @property bool $published
+ */
 class TwillRobotsTxt
 {
-    use Encrypt, Cache;
+    use Encrypt;
+    use Cache;
 
     public const DEFAULT_ERROR_MESSAGE = 'Invisible captcha failed.';
 
@@ -86,12 +91,12 @@ class TwillRobotsTxt
             return null;
         }
 
-        return $this->decrypt($this->current->getAttributes()[$key]);
+        return $this->decrypt($domain->getAttributes()[$key]);
     }
 
     public function hasDotEnv(): bool
     {
-        return $this->config('contents.protected') === true &&
+        return $this->config('contents.enabled') === true &&
             filled($this->config('contents.protected') ?? null) &&
             filled($this->config('contents.unprotected') ?? null);
     }
@@ -118,9 +123,7 @@ class TwillRobotsTxt
             return request()->getHost();
         }
 
-        $url = parse_url($url ?? request()->url());
-
-        return $url['host'] ?? null;
+        return parse_url($url)['host'] ?? null;
     }
 
     public function setCurrent(TwillRobotsTxtModel $current): static
@@ -146,7 +149,7 @@ class TwillRobotsTxt
         }
 
         if (blank($this->current)) {
-            $domains = app(TwillRobotsTxtRepository::class)
+            $domains = $this->repository()
                 ->orderBy('domain')
                 ->get();
 
@@ -167,6 +170,17 @@ class TwillRobotsTxt
 
     public function robotsTxt(): string
     {
-        return $this->getCurrent()->published ? $this->getCurrent()->protected : $this->getCurrent()->unprotected;
+        if ($this->getCurrent() === null) {
+            return config('twill-robots-txt.contents.default.protected');
+        }
+
+        $result = $this->getCurrent()->published ? $this->getCurrent()->protected : $this->getCurrent()->unprotected;
+
+        return (string) $result;
+    }
+
+    public function repository(): TwillRobotsTxtRepository
+    {
+        return app(TwillRobotsTxtRepository::class);
     }
 }

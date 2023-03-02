@@ -2,7 +2,7 @@
 
 namespace A17\TwillRobotsTxt\Services;
 
-use A17\TwillRobotsTxt\Support\TwillRobotsTxt;
+use A17\TwillRobotsTxt\Services\TwillRobotsTxt;
 
 class Helpers
 {
