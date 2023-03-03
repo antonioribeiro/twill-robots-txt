@@ -42,6 +42,33 @@ class TwillRobotsTxtController extends ModuleController
     ];
 
     /**
+     * Options of the index view.
+     *
+     * @var array
+     */
+    protected $defaultIndexOptions = [
+        'create' => true,
+        'edit' => true,
+        'publish' => true,
+        'bulkPublish' => false,
+        'feature' => false,
+        'bulkFeature' => false,
+        'restore' => true,
+        'bulkRestore' => false,
+        'forceDelete' => false,
+        'bulkForceDelete' => false,
+        'delete' => true,
+        'duplicate' => true,
+        'bulkDelete' => false,
+        'reorder' => false,
+        'permalink' => false,
+        'bulkEdit' => false,
+        'editInModal' => false,
+        'skipCreateModal' => false,
+        'includeScheduledInList' => false,
+    ];
+
+    /**
      * @param int|null $parentModuleId
      * @return array|\Illuminate\View\View|RedirectResponse
      */
