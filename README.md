@@ -7,10 +7,10 @@ This Twill Capsule is intended to enable developers to configure Robots TXT on t
 ![screenshot 2](docs/screenshot02.png)
 
 ## How to use it
-Text areas are supposed to contain a full `robots.txt` file content and we will work with these two states:
+Text areas are supposed to contain a full `robots.txt` file content and we have these two states:
 
-- Protected: is when your website should be hidden (protected) from all robots. Usually this will be a deny all rule.
-- Unprotected: your website is open for robots, add here all the [allowed/denied paths and exceptions](https://developers.google.com/search/docs/crawling-indexing/robots/robots_txt#syntax).
+- **Protected**: when the record is published/enabled, your website is hidden (protected) from all robots. Usually this will be a deny all rule.
+- **Unprotected**: when the record is unpublished/disabled, your website is open for robots, add here all the [allowed/denied paths and exceptions](https://developers.google.com/search/docs/crawling-indexing/robots/robots_txt#syntax).
 
 ## Domains
 
