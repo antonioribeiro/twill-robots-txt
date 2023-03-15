@@ -6,7 +6,8 @@ This Twill Capsule is intended to enable developers to configure Robots TXT on t
 
 ![screenshot 2](docs/screenshot02.png)
 
-## How to use it
+## How to use it on the CMS
+
 Text areas are supposed to contain a full `robots.txt` file content and we have these two states:
 
 - **Protected**: when the record is published/enabled, your website is hidden (protected) from all robots. Usually this will be a deny all rule.
