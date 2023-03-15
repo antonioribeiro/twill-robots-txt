@@ -36,11 +36,9 @@ class TwillRobotsTxt
 
     public function __construct()
     {
-        //        $this->setConfigured();
-        //
-        //        $this->setProtected();
-        //
-        //        $this->configureViews();
+        $this->setConfigured();
+
+        $this->setProtected();
     }
 
     public function config(string|null $key = null, mixed $default = null): mixed

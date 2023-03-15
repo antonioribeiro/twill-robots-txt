@@ -3,12 +3,11 @@
 namespace A17\TwillRobotsTxt\Services;
 
 use Illuminate\Support\Str;
-use A17\TwillFirewall\Services\TwillFirewall;
 use Illuminate\Support\Facades\Cache as IlluminateCache;
 
 trait Cache
 {
-    protected string $CACHE_ALL_KEYS = 'twill-firewall.all-keys'; // constant
+    protected string $CACHE_ALL_KEYS = 'twill-robots-txt.all-keys'; // constant
 
     public function cacheGet(string $key, mixed $default = null): mixed
     {
@@ -26,7 +25,7 @@ trait Cache
 
     public function makeCacheKey(string $key): string
     {
-        return sprintf('twill-firewall.%s.%s', Str::slug($this->getDomain() ?? 'no-domain'), Str::slug($key));
+        return sprintf('twill-robots-txt.%s.%s', Str::slug($this->getDomain() ?? 'no-domain'), Str::slug($key));
     }
 
     public function cacheExpiration(): int
