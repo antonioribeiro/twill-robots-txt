@@ -1,4 +1,4 @@
-# Robots TXT Twill Capsule
+# robots.txt Twill Capsule
 
 This Twill Capsule is intended to enable developers to configure Robots TXT on their applications. 
 
