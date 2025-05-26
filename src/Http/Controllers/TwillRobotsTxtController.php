@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\URL;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Redirect;
 use A17\TwillRobotsTxt\Models\TwillRobotsTxt;
+use Illuminate\Contracts\View\View as IlluminateView;
 use A17\Twill\Http\Controllers\Admin\ModuleController;
 use A17\TwillRobotsTxt\Repositories\TwillRobotsTxtRepository;
 use A17\TwillRobotsTxt\Support\Facades\TwillRobotsTxt as TwillRobotsTxtFacade;
@@ -69,10 +70,9 @@ class TwillRobotsTxtController extends ModuleController
     ];
 
     /**
-     * @param int|null $parentModuleId
-     * @return array|\Illuminate\View\View|RedirectResponse
+     * @return IlluminateView|JsonResponse
      */
-    public function index($parentModuleId = null)
+    public function index(int|null $parentModuleId = null): mixed
     {
         $this->generateDomains();
 

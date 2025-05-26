@@ -1,7 +1,7 @@
 @extends('twill::layouts.form')
 
 @php
-    use A17\TwillRobotsTxt\Support\Facades\TwillRobotsTxt;
+
 @endphp
 
 @section('contentFields')
@@ -11,7 +11,7 @@
         'name' => 'protected',
         'label' => 'Protected',
         'required' => true,
-        'disabled' => TwillRobotsTxt::hasDotEnv(),
+        'disabled' => \A17\TwillRobotsTxt\Support\Facades\TwillRobotsTxt::hasDotEnv(),
     ])
 
     @formField('input', [
@@ -20,6 +20,6 @@
         'name' => 'unprotected',
         'label' => 'Unprotected',
         'required' => true,
-        'disabled' => TwillRobotsTxt::hasDotEnv(),
+        'disabled' => \A17\TwillRobotsTxt\Support\Facades\TwillRobotsTxt::hasDotEnv(),
     ])
 @stop

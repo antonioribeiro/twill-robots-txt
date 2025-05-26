@@ -25,11 +25,6 @@
       ]
     }
   },
-  "scripts": {
-      "post-autoload-dump": [
-          "npx husky install"
-      ]
-  },
   "minimum-stability": "dev",
   "prefer-stable": true
 }
