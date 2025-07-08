@@ -138,15 +138,13 @@ class TwillRobotsTxt
 
     public function getCurrent(): TwillRobotsTxtModel|null
     {
-        if (filled($this->current)) {
+        if ($this->current !== null) {
             return $this->current;
         }
 
-        if (blank($this->current)) {
-            $this->current = $this->cacheGet('current-domain');
-        }
+        $this->current = $this->cacheGet('current-domain');
 
-        if (blank($this->current)) {
+        if ($this->current === null) {
             $domains = $this->repository()
                 ->orderBy('domain')
                 ->get();
